@@ -3,42 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text-to-CAD Dashboard</title>
+    <title>Text-to-CAD AI Generator</title>
+    <meta name="description" content="Generate parametric 3D CAD models from natural language. Create gears, flanges, and heat sinks with a simple text prompt.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/style.css">
-    <!-- Include Three.js and STLLoader from CDN for STL preview -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/STLLoader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 </head>
 <body>
     <div class="dashboard-container">
-        <!-- Chat Interface -->
+
+        <!-- Left: Chat Interface -->
         <aside class="sidebar">
-            <h2>Text-to-CAD AI</h2>
-            <div id="chat-history" class="chat-history">
-                <div class="chat-msg ai-msg">Hello! I'm your CAD assistant. Tell me what you want to build (e.g. "Create a spur gear with 30 teeth").</div>
+            <div class="sidebar-header">
+                <div class="logo-badge">CAD</div>
+                <div>
+                    <h1>Text-to-CAD AI</h1>
+                    <p class="subtitle">Describe any part to generate it</p>
+                </div>
             </div>
+
+            <div class="suggestions">
+                <p class="suggestions-label">Try asking for:</p>
+                <button class="suggestion-chip" data-prompt="Create a spur gear with 32 teeth and module 2">⚙️ Gear with 32 teeth</button>
+                <button class="suggestion-chip" data-prompt="Make a pipe flange with 8 bolt holes">🔩 Flange with 8 holes</button>
+                <button class="suggestion-chip" data-prompt="Design a heat sink with 16 fins">🌡️ Heat sink with 16 fins</button>
+            </div>
+
+            <div id="chat-history" class="chat-history">
+                <div class="chat-msg ai-msg">
+                    <div class="msg-icon">🤖</div>
+                    <div class="msg-text">Hello! I'm your CAD assistant. Describe what you want to build and I'll generate a 3D model for you.</div>
+                </div>
+            </div>
+
             <div class="chat-input-area">
-                <input type="text" id="chat-input" placeholder="Type your request here...">
-                <button id="send-btn">Send</button>
+                <input type="text" id="chat-input" placeholder='e.g. "Give me a gear with 30 teeth"' autocomplete="off">
+                <button id="send-btn" title="Send">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                </button>
             </div>
         </aside>
 
-        <!-- Main Content (3D Viewer) -->
+        <!-- Right: 3D Viewer -->
         <main class="viewer-container">
             <div id="viewer-3d">
-                <div class="placeholder-text">Waiting for prompt...</div>
+                <div class="placeholder-content">
+                    <div class="placeholder-icon">🔩</div>
+                    <p class="placeholder-text">Your 3D model will appear here</p>
+                    <p class="placeholder-sub">Type a prompt on the left to get started</p>
+                </div>
+                <div id="loading-overlay" class="loading-overlay hidden">
+                    <div class="spinner"></div>
+                    <p id="loading-text">Running Blender...</p>
+                </div>
             </div>
-            
-            <!-- Parameters Panel -->
+
+            <!-- Parameters Panel (top-right overlay) -->
             <div id="params-panel" class="params-panel hidden">
-                <h3>Parameters</h3>
+                <div class="params-header">
+                    <h3>⚙️ Parameters</h3>
+                    <span class="params-hint">Edit & regenerate</span>
+                </div>
                 <div id="params-container"></div>
-                <button id="update-btn" class="update-btn">Regenerate</button>
+                <button id="update-btn" class="update-btn">↺ Regenerate</button>
             </div>
-            
+
+            <!-- Bottom action bar -->
             <div class="action-bar">
-                <a href="#" id="download-btn" class="download-btn disabled" download>Download STL</a>
+                <span id="model-label" class="model-label">No model loaded</span>
+                <a href="#" id="download-btn" class="download-btn disabled" download>⬇ Download STL</a>
             </div>
         </main>
     </div>
