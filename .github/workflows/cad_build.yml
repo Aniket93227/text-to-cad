@@ -1,0 +1,37 @@
+name: CAD Build Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup Blender
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y blender
+
+    - name: Run Flange Generator
+      run: |
+        blender --background --python generators/flange.py
+
+    - name: Run Heat Sink Generator
+      run: |
+        blender --background --python generators/heat_sink.py
+
+    - name: Run Spur Gear Generator
+      run: |
+        blender --background --python generators/spur_gear.py
+
+    - name: Upload Output Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: cad-stl-outputs
+        path: output/*.stl

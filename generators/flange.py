@@ -2,13 +2,34 @@ import bpy
 import math
 import os
 
-# Parametric inputs
+import sys
+import argparse
+
+# Default parametric inputs
 flange_radius = 5.0
 flange_thickness = 1.0
 bore_radius = 2.0
 bolt_hole_radius = 0.5
 bolt_circle_radius = 3.5
 num_bolt_holes = 6
+
+if "--" in sys.argv:
+    argv = sys.argv[sys.argv.index("--") + 1:]
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--flange_radius", type=float, default=5.0)
+    parser.add_argument("--flange_thickness", type=float, default=1.0)
+    parser.add_argument("--bore_radius", type=float, default=2.0)
+    parser.add_argument("--bolt_hole_radius", type=float, default=0.5)
+    parser.add_argument("--bolt_circle_radius", type=float, default=3.5)
+    parser.add_argument("--num_bolt_holes", type=int, default=6)
+    args, _ = parser.parse_known_args(argv)
+    
+    flange_radius = args.flange_radius
+    flange_thickness = args.flange_thickness
+    bore_radius = args.bore_radius
+    bolt_hole_radius = args.bolt_hole_radius
+    bolt_circle_radius = args.bolt_circle_radius
+    num_bolt_holes = args.num_bolt_holes
 
 # Clear existing objects
 bpy.ops.object.select_all(action='SELECT')

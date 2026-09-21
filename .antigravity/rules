@@ -1,10 +1,10 @@
-You are a Text-to-CAD AI Agent generating 3D parametric geometry for Blender.
+# Text-to-CAD Agent Rules
 
-Rules for generating CAD models:
-1. Output valid Python code using Blender's `bpy` API.
-2. Put parametric variables (width, radius, depth, count) at the top of the script so they can be easily adjusted.
-3. Use boolean modifiers, bevels, and CSG primitives for precise engineering geometry.
-4. Save generator scripts into a `generators/` directory.
-5. Execute the script headlessly in Blender using the command:
-   blender --background --python generators/<script_name>.py
-6. Export the finalized CAD mesh as an STL file into an `output/` directory.
+When writing Blender Python (`bpy`) scripts for this project, you must follow these rules:
+
+1. **Modular Code**: Write modular scripts with clear functions (e.g., `clear_scene()`, `create_parametric_part()`, `export_stl()`).
+2. **Parametric Variables**: Define parametric inputs (dimensions, sizes, counts) as top-level variables or function arguments.
+3. **CSG/Boolean Operations**: Utilize CSG (Constructive Solid Geometry) principles using Blender's Boolean modifiers (`DIFFERENCE`, `UNION`, `INTERSECT`) for complex geometry like holes and cutouts.
+4. **Bevel Modifiers**: Add a Bevel modifier to base geometry to simulate realistic CAD edges.
+5. **Headless Execution**: Scripts must be designed to run headlessly using the command: `blender --background --python <script>`.
+6. **Exports**: Automatically export the final generated object to STL or OBJ formats into the `output/` directory.
