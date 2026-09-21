@@ -26,6 +26,10 @@ jobs:
       run: |
         blender --background --python generators/heat_sink.py
 
+    - name: Run Spur Gear Generator
+      run: |
+        blender --background --python generators/spur_gear.py
+
     - name: Upload Output Artifacts
       uses: actions/upload-artifact@v3
       with:
