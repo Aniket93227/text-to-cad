@@ -51,7 +51,30 @@ def export_stl(output_filepath):
 
 if __name__ == "__main__":
     clear_scene()
-    create_parametric_part()
+    
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--base_width", type=float, default=40.0)
+    parser.add_argument("--base_depth", type=float, default=40.0)
+    parser.add_argument("--base_height", type=float, default=5.0)
+    parser.add_argument("--num_fins", type=int, default=12)
+    parser.add_argument("--fin_height", type=float, default=20.0)
+    parser.add_argument("--fin_thickness", type=float, default=1.0)
+    
+    if "--" in sys.argv:
+        argv = sys.argv[sys.argv.index("--") + 1:]
+        args, _ = parser.parse_known_args(argv)
+        create_parametric_part(
+            base_width=args.base_width,
+            base_depth=args.base_depth,
+            base_height=args.base_height,
+            num_fins=args.num_fins,
+            fin_height=args.fin_height,
+            fin_thickness=args.fin_thickness
+        )
+    else:
+        create_parametric_part()
+    
     
     # Use absolute path for output to ensure it saves in the correct location
     output_dir = os.path.join(os.getcwd(), "output")

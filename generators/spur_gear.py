@@ -89,7 +89,25 @@ def export_stl(output_filepath):
 
 if __name__ == "__main__":
     clear_scene()
-    create_parametric_part(num_teeth=24, module=1.5, thickness=6.0, bore_radius=5.0)
+    
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--num_teeth", type=int, default=24)
+    parser.add_argument("--module", type=float, default=1.5)
+    parser.add_argument("--thickness", type=float, default=6.0)
+    parser.add_argument("--bore_radius", type=float, default=5.0)
+    
+    if "--" in sys.argv:
+        argv = sys.argv[sys.argv.index("--") + 1:]
+        args, _ = parser.parse_known_args(argv)
+        create_parametric_part(
+            num_teeth=args.num_teeth,
+            module=args.module,
+            thickness=args.thickness,
+            bore_radius=args.bore_radius
+        )
+    else:
+        create_parametric_part(num_teeth=24, module=1.5, thickness=6.0, bore_radius=5.0)
     
     # Use absolute path for output to ensure it saves in the correct location
     output_dir = os.path.join(os.getcwd(), "output")

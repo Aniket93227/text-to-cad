@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text-to-CAD Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <!-- Include Three.js and STLLoader from CDN for STL preview -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/STLLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Chat Interface -->
+        <aside class="sidebar">
+            <h2>Text-to-CAD AI</h2>
+            <div id="chat-history" class="chat-history">
+                <div class="chat-msg ai-msg">Hello! I'm your CAD assistant. Tell me what you want to build (e.g. "Create a spur gear with 30 teeth").</div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="chat-input" placeholder="Type your request here...">
+                <button id="send-btn">Send</button>
+            </div>
+        </aside>
+
+        <!-- Main Content (3D Viewer) -->
+        <main class="viewer-container">
+            <div id="viewer-3d">
+                <div class="placeholder-text">Waiting for prompt...</div>
+            </div>
+            
+            <!-- Parameters Panel -->
+            <div id="params-panel" class="params-panel hidden">
+                <h3>Parameters</h3>
+                <div id="params-container"></div>
+                <button id="update-btn" class="update-btn">Regenerate</button>
+            </div>
+            
+            <div class="action-bar">
+                <a href="#" id="download-btn" class="download-btn disabled" download>Download STL</a>
+            </div>
+        </main>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
